@@ -84,3 +84,31 @@ h1, h2, h3, h4, h5, h6 {
 p, span, a {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
+
+/* Enhanced Font Sizes for Better Visibility */
+h1 {
+  font-size: 4rem !important;
+}
+
+h2 {
+  font-size: 3rem !important;
+}
+
+h3 {
+  font-size: 2rem !important;
+}
+
+p {
+  font-size: 1.125rem !important;
+}
+
+/* Specific overrides for key sections */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 5rem !important;
+  }
+  
+  h2 {
+    font-size: 4rem !important;
+  }
+}

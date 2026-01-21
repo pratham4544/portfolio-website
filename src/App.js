@@ -2,23 +2,38 @@ import React, { useState } from 'react';
 import LandingPage from './components/LandingPage';
 import MysticalTree from './components/MysticalTree';
 import PotionSkills from './components/PotionSkills';
-// import SummoningCircle from './components/SummoningCircle';
-import ContactCards from './components/ContactCards';    
+import LiveLabDemos from './components/LiveLabDemos';
+import ContactCards from './components/ContactCards';
+import SmokeTransition from './components/SmokeTransition';
+
 function App() {
   const [showContent, setShowContent] = useState(false);
+  const [showSmoke, setShowSmoke] = useState(false);
+
+  const handleChestOpen = () => {
+    setShowSmoke(true);
+  };
+
+  const handleSmokeComplete = () => {
+    setShowSmoke(false);
+    setShowContent(true);
+  };
 
   return (
     <div className="App">
       {/* Landing Page */}
-      <LandingPage onChestOpen={() => setShowContent(true)} />
+      <LandingPage onChestOpen={handleChestOpen} />
       
-      {/* All Content Sections (shown after chest opens) */}
+      {/* Smoke Transition */}
+      <SmokeTransition show={showSmoke} onComplete={handleSmokeComplete} />
+      
+      {/* All Content Sections (shown after smoke clears) */}
       {showContent && (
         <>
           <MysticalTree />
           <PotionSkills />
-          {/* <SummoningCircle /> */}
-          <ContactCards /> 
+          <LiveLabDemos />
+          <ContactCards />
         </>
       )}
     </div>

@@ -125,7 +125,7 @@ const LandingPage = ({ onChestOpen }) => {
             }}
             className="mb-8"
           >
-            <AlchemistCharacter />
+            <AlchemistCharacter showSpeech={isChestOpened} />
           </motion.div>
 
           {/* Main Heading */}
@@ -133,7 +133,7 @@ const LandingPage = ({ onChestOpen }) => {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-5xl md:text-7xl font-mystical font-bold text-center mb-4 px-4"
+            className="text-6xl md:text-8xl lg:text-9xl font-mystical font-bold text-center mb-4 px-4"
             style={{
               background: 'linear-gradient(135deg, #FFD700 0%, #00D9FF 50%, #FFD700 100%)',
               WebkitBackgroundClip: 'text',

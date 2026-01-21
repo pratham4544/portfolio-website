@@ -71,7 +71,29 @@ const AlchemistCharacter = ({ small = false }) => {
             >
               🧙‍♂️
             </motion.div>
-            
+
+            {/* Speech Bubble */}
+            {!small && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
+                className="absolute -left-8 top-8 bg-alchemy-parchment px-6 py-4 rounded-2xl shadow-2xl max-w-xs"
+                style={{
+                  border: '3px solid #8B4513',
+                  boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
+                }}
+              >
+                <p className="font-handwritten text-2xl text-alchemy-dark font-bold text-center"
+                  style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}>
+                  Behold my experiments!
+                </p>
+                {/* Speech bubble pointer */}
+                <div className="absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-l-12 border-transparent border-l-alchemy-parchment"
+                    style={{ borderLeftColor: '#F4E4C1' }} />
+              </motion.div>
+            )}
+
             {/* Magic Wand */}
             <motion.div
               className="absolute -right-4 top-8 text-4xl"
