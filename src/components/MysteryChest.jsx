@@ -227,21 +227,76 @@ const MysteryChest = ({ onClick }) => {
         />
       </div>
 
-      {/* Hover Instruction Text */}
+      {/* Animated Arrow Pointing Down */}
       <motion.div
-        className="absolute -bottom-24 left-1/2 transform -translate-x-1/2 text-center whitespace-nowrap"
+        className="absolute -bottom-64 left-1/2 transform -translate-x-1/2"
         animate={{
-          y: [0, -8, 0],
+          y: [0, -15, 0],
         }}
         transition={{
           duration: 1.5,
           repeat: Infinity,
         }}
       >
-        <p className="text-2xl md:text-3xl font-mystical font-bold glow-text mb-2">
-          Click to Unfold Mystery
+        <div className="text-7xl"
+             style={{ 
+               filter: 'drop-shadow(0 0 25px rgba(255,215,0,1))',
+             }}>
+          👇
+        </div>
+      </motion.div>
+
+      {/* Hover Instruction Text */}
+      <motion.div
+        className="absolute -bottom-48 left-1/2 transform -translate-x-1/2 text-center w-full max-w-2xl px-4"
+        animate={{
+          y: [0, -5, 0],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+        }}
+      >
+        {/* Main Click Instruction */}
+        <motion.div
+          animate={{
+            scale: [1, 1.08, 1],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+          }}
+          className="mb-4"
+        >
+          <p className="text-4xl md:text-5xl lg:text-6xl font-mystical font-bold text-alchemy-gold"
+             style={{ 
+               textShadow: '0 0 30px rgba(255,215,0,1), 3px 3px 10px rgba(0,0,0,1)',
+               filter: 'drop-shadow(0 0 20px rgba(255,215,0,0.9))'
+             }}>
+            👆 Click Here to Open 👆
+          </p>
+        </motion.div>
+
+        {/* Subtext */}
+        <p className="text-2xl md:text-3xl font-handwritten text-alchemy-parchment mb-2"
+           style={{ 
+             textShadow: '2px 2px 8px rgba(0,0,0,1)',
+             background: 'rgba(0,0,0,0.6)',
+             padding: '12px 24px',
+             borderRadius: '12px',
+             display: 'inline-block'
+           }}>
+          Unfold the Mystery of My Journey
         </p>
-        <p className="text-sm text-alchemy-parchment opacity-70">
+
+        <p className="text-lg md:text-xl text-alchemy-cyan mt-2"
+           style={{ 
+             textShadow: '1px 1px 6px rgba(0,0,0,1)',
+             background: 'rgba(0,0,0,0.5)',
+             padding: '8px 16px',
+             borderRadius: '8px',
+             display: 'inline-block'
+           }}>
           Discover the secrets of alchemical transmutation
         </p>
       </motion.div>

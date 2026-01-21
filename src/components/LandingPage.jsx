@@ -29,12 +29,18 @@ const LandingPage = ({ onChestOpen }) => {
     setIsChestOpened(true);
     setTimeout(() => {
       onChestOpen();
-      // Scroll to timeline section
-      document.getElementById('timeline')?.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }, 1000);
+    }, 800);
+    
+    // Auto scroll after smoke animation
+    setTimeout(() => {
+      const timelineSection = document.getElementById('timeline');
+      if (timelineSection) {
+        timelineSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 2500); // Wait for smoke animation to complete
   };
 
   return (
@@ -155,17 +161,25 @@ const LandingPage = ({ onChestOpen }) => {
             Where Data Transforms into Digital Gold
           </motion.p>
 
-          {/* Name */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="text-lg md:text-xl text-alchemy-cyan text-center mb-12 px-4"
-          >
-            Prathamesh Shete - Master of AI Transmutation
-          </motion.p>
+                <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.8 }}
+                className="text-lg md:text-xl text-alchemy-cyan text-center mb-12 px-4 font-mystical"
+                >
+                Prathamesh Shete - Master of AI Transmutation
+                </motion.p>
 
-          {/* Mystery Chest */}
+                <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2, duration: 0.8 }}
+                className="text-lg md:text-xl text-alchemy-cyan text-center mb-12 px-4 font-handwritten"
+                >
+                Click the mystery box to Unfold the Secrets
+                </motion.p>
+
+                {/* Mystery Chest */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
