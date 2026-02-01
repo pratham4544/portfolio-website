@@ -15,45 +15,13 @@ const MysticalTree = () => {
         }}
       />
 
-      {/* Mystical Fog Effect */}
-      <motion.div
+      {/* Mystical Fog Effect - static */}
+      <div
         className="absolute inset-0 opacity-20"
         style={{
           background: 'radial-gradient(circle at 50% 50%, rgba(74,26,92,0.4) 0%, transparent 70%)',
         }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.15, 0.25, 0.15],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-        }}
       />
-
-      {/* Fireflies */}
-      {[...Array(15)].map((_, i) => (
-        <motion.div
-          key={`firefly-${i}`}
-          className="absolute w-2 h-2 rounded-full bg-alchemy-gold"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            boxShadow: '0 0 10px #FFD700',
-          }}
-          animate={{
-            x: [0, Math.random() * 100 - 50],
-            y: [0, Math.random() * 100 - 50],
-            opacity: [0.3, 1, 0.3],
-            scale: [1, 1.5, 1],
-          }}
-          transition={{
-            duration: 5 + Math.random() * 5,
-            repeat: Infinity,
-            delay: Math.random() * 3,
-          }}
-        />
-      ))}
 
       {/* Small Alchemist Character - Bottom Left Corner */}
       <motion.div
@@ -79,18 +47,7 @@ const MysticalTree = () => {
           </motion.div>
           
           {/* Speech Bubble */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute -right-4 top-8 bg-alchemy-parchment text-alchemy-dark px-3 py-2 rounded-lg text-xs font-handwritten whitespace-nowrap"
-            style={{
-              boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
-            }}
-          >
-            Behold my experiments!
-            <div className="absolute left-0 top-1/2 transform -translate-x-2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-r-8 border-transparent border-r-alchemy-parchment" />
-          </motion.div>
+          
         </div>
       </motion.div>
 
@@ -117,24 +74,10 @@ const MysticalTree = () => {
         </p>
         
         {/* Decorative Runes */}
-        <div className="flex justify-center gap-4 mt-4 text-3xl">
-          {['⚗️', '✦', '⚗️'].map((rune, i) => (
-            <motion.span
-              key={i}
-              className="text-alchemy-cyan"
-              animate={{
-                opacity: [0.5, 1, 0.5],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.3,
-              }}
-            >
-              {rune}
-            </motion.span>
-          ))}
+        <div className="flex justify-center gap-4 mt-4 text-3xl text-alchemy-cyan">
+          <span>⚗️</span>
+          <span>✦</span>
+          <span>⚗️</span>
         </div>
       </motion.div>
 
@@ -153,24 +96,7 @@ const MysticalTree = () => {
           initial={{ height: 0 }}
           animate={{ height: '100%' }}
           transition={{ duration: 2, delay: 0.5 }}
-        >
-          {/* Glowing Energy Veins */}
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'linear-gradient(to bottom, transparent 0%, #00D9FF 50%, transparent 100%)',
-              opacity: 0.3,
-            }}
-            animate={{
-              y: ['-100%', '100%'],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        </motion.div>
+        />
 
         {/* Tree Roots (at bottom) */}
         <motion.div
@@ -223,30 +149,7 @@ const MysticalTree = () => {
                   whileInView={{ width: isLeft ? '6rem' : '6rem' }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 + 0.3, duration: 0.6 }}
-                >
-                  {/* Leaves on branch */}
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute text-xl"
-                      style={{
-                        left: `${20 + i * 30}%`,
-                        top: i % 2 === 0 ? '-10px' : '0px',
-                      }}
-                      animate={{
-                        rotate: [0, 10, -10, 0],
-                        opacity: [0.6, 1, 0.6],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        delay: i * 0.5,
-                      }}
-                    >
-                      🍃
-                    </motion.div>
-                  ))}
-                </motion.div>
+                />
 
                 {/* Glowing Node on Trunk */}
                 <motion.div
@@ -256,33 +159,14 @@ const MysticalTree = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 + 0.5, duration: 0.5 }}
                 >
-                  <div 
-                    className="w-8 h-8 rounded-full relative"
+                  <div
+                    className="w-8 h-8 rounded-full relative flex items-center justify-center text-lg"
                     style={{
                       background: `radial-gradient(circle, ${project.potionColor}, #4A1A5C)`,
                       boxShadow: `0 0 20px ${project.potionColor}`,
                     }}
                   >
-                    {/* Pulse Effect */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        background: `radial-gradient(circle, ${project.potionColor}, transparent)`,
-                      }}
-                      animate={{
-                        scale: [1, 2, 1],
-                        opacity: [0.6, 0, 0.6],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                      }}
-                    />
-                    
-                    {/* Project Rune in Center */}
-                    <div className="absolute inset-0 flex items-center justify-center text-lg">
-                      {project.rune}
-                    </div>
+                    {project.rune}
                   </div>
                 </motion.div>
 
@@ -298,21 +182,12 @@ const MysticalTree = () => {
                   <div className="w-0.5 h-8 bg-alchemy-silver mx-auto opacity-50" />
                   
                   {/* Lantern */}
-                  <motion.div
+                  <div
                     className="w-12 h-16 rounded-lg relative"
                     style={{
                       background: 'linear-gradient(135deg, #2d1638 0%, #4A1A5C 100%)',
                       boxShadow: `0 0 20px ${project.potionColor}`,
                       border: '2px solid #FFD700',
-                    }}
-                    animate={{
-                      y: [0, -5, 0],
-                      rotate: [-2, 2, -2],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      delay: index * 0.3,
                     }}
                   >
                     {/* Inner Glow */}
@@ -328,7 +203,7 @@ const MysticalTree = () => {
                     <div className="absolute inset-0 flex items-center justify-center text-2xl">
                       {project.rune}
                     </div>
-                  </motion.div>
+                  </div>
                 </motion.div>
 
                 {/* Project Card Container */}
@@ -363,23 +238,12 @@ const MysticalTree = () => {
 
         {/* Tree Top - Mystical Crown */}
         <motion.div
-          className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-20"
-          initial={{ opacity: 0, scale: 0, y: 50 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-20 text-6xl"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          <motion.div
-            animate={{
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            <div className="text-6xl">✨</div>
-          </motion.div>
+          ✨
         </motion.div>
       </div>
 
@@ -393,18 +257,7 @@ const MysticalTree = () => {
         <p className="text-3xl font-handwritten text-alchemy-parchment mb-4">
           More experiments brewing in the cauldron...
         </p>
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-          }}
-          className="text-5xl"
-        >
-          ⚗️
-        </motion.div>
+        <div className="text-5xl">⚗️</div>
       </motion.div>
     </section>
   );

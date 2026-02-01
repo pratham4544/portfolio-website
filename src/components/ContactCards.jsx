@@ -47,27 +47,6 @@ const ContactCards = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-alchemy-dark via-alchemy-purple to-alchemy-dark" />
 
-      {/* Floating Particles */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-alchemy-gold rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.8, 0.2],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 2,
-            repeat: Infinity,
-            delay: Math.random() * 2,
-          }}
-        />
-      ))}
-
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <motion.div

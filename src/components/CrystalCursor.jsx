@@ -1,152 +1,135 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 
 const CrystalCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isPointer, setIsPointer] = useState(false);
-  const [particles, setParticles] = useState([]);
+  const wandRef = useRef(null);
+  const glowRef = useRef(null);
+  const isPointerRef = useRef(false);
 
   useEffect(() => {
-    const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      
-      // Create particle trail
-      if (Math.random() > 0.7) {
-        const newParticle = {
-          id: Date.now() + Math.random(),
-          x: e.clientX,
-          y: e.clientY,
-        };
-        setParticles(prev => [...prev.slice(-10), newParticle]);
-      }
+    const wand = wandRef.current;
+    const glow = glowRef.current;
+    if (!wand || !glow) return;
+
+    let animationId;
+    let targetX = 0;
+    let targetY = 0;
+
+    const updateCursor = () => {
+      // Direct transform - no lag
+      wand.style.transform = `translate(${targetX}px, ${targetY}px) rotate(-45deg)`;
+      glow.style.transform = `translate(${targetX}px, ${targetY}px)`;
+      animationId = requestAnimationFrame(updateCursor);
     };
 
-    const updateCursorType = (e) => {
+    const handleMouseMove = (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
+
+    const handleMouseOver = (e) => {
       const target = e.target;
-      setIsPointer(
+      const isClickable =
         target.tagName === 'A' ||
         target.tagName === 'BUTTON' ||
         target.onclick !== null ||
         target.classList.contains('cursor-pointer') ||
-        window.getComputedStyle(target).cursor === 'pointer'
-      );
+        window.getComputedStyle(target).cursor === 'pointer';
+
+      if (isClickable !== isPointerRef.current) {
+        isPointerRef.current = isClickable;
+        wand.style.filter = isClickable
+          ? 'drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 20px #00D9FF)'
+          : 'drop-shadow(0 0 8px #00D9FF)';
+        glow.style.opacity = isClickable ? '0.8' : '0.4';
+        glow.style.transform = `translate(${targetX}px, ${targetY}px) scale(${isClickable ? 1.5 : 1})`;
+      }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', updateCursorType);
+    animationId = requestAnimationFrame(updateCursor);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('mouseover', updateCursorType);
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
 
   return (
     <>
-      {/* Particle Trail */}
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="fixed pointer-events-none z-40"
-          style={{
-            left: particle.x,
-            top: particle.y,
-          }}
-          initial={{ opacity: 1, scale: 1 }}
-          animate={{ opacity: 0, scale: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="w-1 h-1 rounded-full bg-alchemy-cyan" 
-               style={{ boxShadow: '0 0 8px #00D9FF' }} />
-        </motion.div>
-      ))}
+      {/* Magical Glow */}
+      <div
+        ref={glowRef}
+        className="fixed pointer-events-none z-40"
+        style={{
+          width: 24,
+          height: 24,
+          marginLeft: -12,
+          marginTop: -12,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(0,217,255,0.6) 0%, rgba(74,26,92,0.3) 50%, transparent 70%)',
+          opacity: 0.4,
+          transition: 'opacity 0.2s, filter 0.2s',
+        }}
+      />
 
-      {/* Main Crystal Wand */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-50"
-        animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isPointer ? 1.5 : 1,
-          rotate: isPointer ? 15 : 0,
+      {/* Wizard Wand */}
+      <svg
+        ref={wandRef}
+        className="fixed pointer-events-none z-50"
+        style={{
+          width: 40,
+          height: 40,
+          marginLeft: -4,
+          marginTop: -36,
+          filter: 'drop-shadow(0 0 8px #00D9FF)',
+          transition: 'filter 0.2s',
         }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 500, 
-          damping: 28,
-          rotate: { duration: 0.2 }
-        }}
+        viewBox="0 0 40 40"
+        fill="none"
       >
-        {/* Crystal Core */}
-        <div className="relative w-4 h-4">
-          {/* Inner Glow */}
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'radial-gradient(circle, #00D9FF 0%, #4A1A5C 70%)',
-            }}
-            animate={{
-              opacity: isPointer ? [0.6, 1, 0.6] : [0.4, 0.7, 0.4],
-            }}
-            transition={{ duration: 1, repeat: Infinity }}
-          />
-          
-          {/* Outer Crystal */}
-          <div 
-            className="absolute inset-0 rounded-full border-2 border-alchemy-cyan"
-            style={{
-              boxShadow: '0 0 10px #00D9FF, 0 0 20px #4A1A5C',
-            }}
-          />
-
-          {/* Sparkle Effect on Click */}
-          {isPointer && (
-            <>
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 bg-alchemy-gold rounded-full"
-                  style={{
-                    left: '50%',
-                    top: '50%',
-                  }}
-                  animate={{
-                    x: [0, Math.cos(i * 60 * Math.PI / 180) * 20],
-                    y: [0, Math.sin(i * 60 * Math.PI / 180) * 20],
-                    opacity: [1, 0],
-                    scale: [1, 0],
-                  }}
-                  transition={{
-                    duration: 0.6,
-                    repeat: Infinity,
-                    delay: i * 0.1,
-                  }}
-                />
-              ))}
-            </>
-          )}
-        </div>
-      </motion.div>
-
-      {/* Trailing Ring */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-40"
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isPointer ? 2 : 1,
-        }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 150, 
-          damping: 15 
-        }}
-      >
-        <div 
-          className="w-8 h-8 rounded-full border border-alchemy-purple opacity-50"
-          style={{ borderStyle: 'dashed' }}
+        {/* Wand Stick */}
+        <rect
+          x="18"
+          y="12"
+          width="4"
+          height="26"
+          rx="1"
+          fill="url(#wandGradient)"
         />
-      </motion.div>
+
+        {/* Wand Handle Rings */}
+        <rect x="17" y="30" width="6" height="2" rx="1" fill="#8B4513" />
+        <rect x="17" y="34" width="6" height="2" rx="1" fill="#8B4513" />
+
+        {/* Crystal Tip */}
+        <polygon
+          points="20,2 24,12 20,10 16,12"
+          fill="url(#crystalGradient)"
+        />
+
+        {/* Crystal Glow */}
+        <circle cx="20" cy="8" r="3" fill="url(#glowGradient)" opacity="0.8" />
+
+        {/* Gradients */}
+        <defs>
+          <linearGradient id="wandGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#4A1A5C" />
+            <stop offset="50%" stopColor="#2D1B4E" />
+            <stop offset="100%" stopColor="#1a0a2e" />
+          </linearGradient>
+          <linearGradient id="crystalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#00D9FF" />
+            <stop offset="100%" stopColor="#4A1A5C" />
+          </linearGradient>
+          <radialGradient id="glowGradient">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="50%" stopColor="#00D9FF" />
+            <stop offset="100%" stopColor="#4A1A5C" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
     </>
   );
 };

@@ -80,30 +80,6 @@ const PotionBottle = ({ potion, index, shelfIndex }) => {
             viewport={{ once: true }}
             transition={{ duration: 1.5, delay: shelfIndex * 0.2 + index * 0.1 + 0.3 }}
           >
-            {/* Bubbles */}
-            {[...Array(potion.bubbles)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full bg-white opacity-30"
-                style={{
-                  width: `${Math.random() * 6 + 3}px`,
-                  height: `${Math.random() * 6 + 3}px`,
-                  left: `${Math.random() * 80 + 10}%`,
-                  bottom: `${Math.random() * 20}%`,
-                }}
-                animate={{
-                  y: [0, -60],
-                  opacity: [0.3, 0],
-                  scale: [1, 0.5],
-                }}
-                transition={{
-                  duration: 2 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-
             {/* Shine Effect */}
             <div
               className="absolute top-2 left-2 w-4 h-8 rounded-full opacity-40"
@@ -194,28 +170,6 @@ const PotionSkills = () => {
         }}
       />
 
-      {/* Magical Particles */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className="absolute w-1 h-1 rounded-full bg-alchemy-cyan"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            boxShadow: '0 0 4px #00D9FF',
-          }}
-          animate={{
-            y: [0, -50, 0],
-            opacity: [0.2, 0.8, 0.2],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 3,
-            repeat: Infinity,
-            delay: Math.random() * 2,
-          }}
-        />
-      ))}
-
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <motion.div
@@ -239,18 +193,7 @@ const PotionSkills = () => {
           </p>
 
           {/* Decorative Cauldron */}
-          <motion.div
-            className="mt-6 text-6xl"
-            animate={{
-              rotate: [0, 5, -5, 0],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-            }}
-          >
-            🧪
-          </motion.div>
+          <div className="mt-6 text-6xl">🧪</div>
         </motion.div>
 
         {/* Potion Shelves */}

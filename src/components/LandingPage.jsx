@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import AlchemistCharacter from './AlchemistCharacter';
 import MysteryChest from './MysteryChest';
 import CrystalCursor from './CrystalCursor';
@@ -7,8 +7,6 @@ import ParticleEffect from './ParticleEffect';
 import { soundManager } from './SoundManager';
 
 const LandingPage = ({ onChestOpen }) => {
-  const [isChestOpened, setIsChestOpened] = useState(false);
-
   useEffect(() => {
     // Initialize sound manager
     soundManager.init();
@@ -26,21 +24,21 @@ const LandingPage = ({ onChestOpen }) => {
   }, []);
 
   const handleChestClick = () => {
-    setIsChestOpened(true);
+    // Trigger smoke animation
     setTimeout(() => {
       onChestOpen();
     }, 800);
-    
-    // Auto scroll after smoke animation
+
+    // Auto scroll to experiment tree after smoke animation
     setTimeout(() => {
       const timelineSection = document.getElementById('timeline');
       if (timelineSection) {
-        timelineSection.scrollIntoView({ 
+        timelineSection.scrollIntoView({
           behavior: 'smooth',
           block: 'start'
         });
       }
-    }, 2500); // Wait for smoke animation to complete
+    }, 2500);
   };
 
   return (
@@ -60,61 +58,8 @@ const LandingPage = ({ onChestOpen }) => {
           }}
         />
 
-        {/* Particle Effects */}
-        <ParticleEffect count={40} />
-
-        {/* Floating Candles */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{
-              left: `${10 + i * 15}%`,
-              top: `${20 + (i % 3) * 25}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.4, 0.7, 0.4],
-            }}
-            transition={{
-              duration: 4 + i,
-              repeat: Infinity,
-              delay: i * 0.5,
-            }}
-          >
-            <div className="text-4xl">🕯️</div>
-            {/* Flame Glow */}
-            <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full blur-lg"
-              style={{
-                background: 'radial-gradient(circle, rgba(255,165,0,0.6) 0%, transparent 70%)',
-              }}
-            />
-          </motion.div>
-        ))}
-
-        {/* Floating Books */}
-        {[...Array(4)].map((_, i) => (
-          <motion.div
-            key={`book-${i}`}
-            className="absolute text-5xl opacity-20"
-            style={{
-              left: `${15 + i * 25}%`,
-              top: `${15 + i * 20}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              rotate: [0, 15, -15, 0],
-            }}
-            transition={{
-              duration: 8 + i * 2,
-              repeat: Infinity,
-              delay: i * 0.8,
-            }}
-          >
-            📖
-          </motion.div>
-        ))}
+        {/* Particle Effects - reduced count */}
+        <ParticleEffect count={15} />
 
         {/* Main Content */}
         <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
@@ -131,7 +76,7 @@ const LandingPage = ({ onChestOpen }) => {
             }}
             className="mb-8"
           >
-            <AlchemistCharacter showSpeech={isChestOpened} />
+            <AlchemistCharacter />
           </motion.div>
 
           {/* Main Heading */}
@@ -144,8 +89,6 @@ const LandingPage = ({ onChestOpen }) => {
               background: 'linear-gradient(135deg, #FFD700 0%, #00D9FF 50%, #FFD700 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              backgroundSize: '200% 200%',
-              animation: 'shimmer 3s ease-in-out infinite',
             }}
           >
             The Alchemist's Laboratory
@@ -174,9 +117,15 @@ const LandingPage = ({ onChestOpen }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="text-lg md:text-xl text-alchemy-cyan text-center mb-12 px-4 font-handwritten"
+                className="text-2xl md:text-3xl text-alchemy-gold text-center mb-12 px-6 py-3 font-mystical font-bold"
+                style={{
+                  textShadow: '0 0 20px rgba(255,215,0,0.8), 2px 2px 8px rgba(0,0,0,1)',
+                  background: 'rgba(0,0,0,0.5)',
+                  borderRadius: '12px',
+                  border: '2px solid rgba(255,215,0,0.4)',
+                }}
                 >
-                Click the mystery box to Unfold the Secrets
+                ✨ Click the Mystery Box to Unfold the Secrets ✨
                 </motion.p>
 
                 {/* Mystery Chest */}
@@ -193,64 +142,9 @@ const LandingPage = ({ onChestOpen }) => {
             <MysteryChest onClick={handleChestClick} />
           </motion.div>
 
-          {/* Alchemical Symbols Floating Around */}
-          {['⚗️', '🔮', '📜', '⚡', '✨'].map((symbol, i) => (
-            <motion.div
-              key={`symbol-${i}`}
-              className="absolute text-4xl md:text-6xl opacity-20"
-              style={{
-                left: `${10 + i * 20}%`,
-                bottom: `${10 + (i % 2) * 15}%`,
-              }}
-              animate={{
-                y: [0, -20, 0],
-                rotate: [0, 360],
-                opacity: [0.1, 0.3, 0.1],
-              }}
-              transition={{
-                duration: 10 + i * 2,
-                repeat: Infinity,
-                delay: i * 0.5,
-              }}
-            >
-              {symbol}
-            </motion.div>
-          ))}
-
-          {/* Scroll Indicator (appears after chest opens) */}
-          <AnimatePresence>
-            {isChestOpened && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="absolute bottom-10"
-              >
-                <motion.div
-                  animate={{ y: [0, 15, 0] }}
-                  transition={{ 
-                    duration: 1.5, 
-                    repeat: Infinity 
-                  }}
-                  className="text-alchemy-gold text-5xl"
-                >
-                  ↓
-                </motion.div>
-                <p className="text-alchemy-parchment text-center mt-2">
-                  Scroll to explore experiments
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          
         </div>
 
-        {/* Add shimmer animation to global styles */}
-        <style jsx>{`
-          @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-          }
-        `}</style>
       </div>
     </>
   );

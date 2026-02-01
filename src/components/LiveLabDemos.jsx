@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { FaFlask, FaCode, FaBrain, FaRobot } from 'react-icons/fa';
 
 const LiveLabDemos = () => {
-  const [activeDemo, setActiveDemo] = useState(null);
 
   const demos = [
     {
@@ -40,29 +39,6 @@ const LiveLabDemos = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-alchemy-dark via-alchemy-purple to-alchemy-dark" />
 
-      {/* Floating Potions */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute text-6xl opacity-20"
-          style={{
-            left: `${10 + i * 12}%`,
-            top: `${20 + (i % 3) * 25}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            rotate: [0, 15, -15, 0],
-          }}
-          transition={{
-            duration: 5 + i,
-            repeat: Infinity,
-            delay: i * 0.5,
-          }}
-        >
-          🧪
-        </motion.div>
-      ))}
-
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <motion.div
@@ -71,19 +47,10 @@ const LiveLabDemos = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <motion.div
-            className="inline-block mb-6"
-            animate={{
-              rotate: [0, 10, -10, 0],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-            }}
-          >
-            <FaFlask className="text-8xl text-alchemy-gold mx-auto" 
+          <div className="inline-block mb-6">
+            <FaFlask className="text-8xl text-alchemy-gold mx-auto"
                      style={{ filter: 'drop-shadow(0 0 20px rgba(255,215,0,0.6))' }} />
-          </motion.div>
+          </div>
 
           <h2 className="text-7xl md:text-8xl font-mystical font-bold mb-6 text-alchemy-gold"
               style={{ textShadow: '0 0 30px rgba(255,215,0,0.5)' }}>
@@ -112,7 +79,6 @@ const LiveLabDemos = () => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
               whileHover={{ scale: 1.05, y: -10 }}
-              onClick={() => setActiveDemo(demo.id)}
               className={`relative p-8 rounded-3xl bg-gradient-to-br ${demo.color} cursor-pointer group`}
               style={{
                 boxShadow: '0 15px 40px rgba(0,0,0,0.6)',
@@ -120,17 +86,7 @@ const LiveLabDemos = () => {
               }}
             >
               {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 rounded-3xl bg-white opacity-0 group-hover:opacity-10 transition-opacity"
-                animate={{
-                  boxShadow: [
-                    '0 0 20px rgba(255,255,255,0.2)',
-                    '0 0 40px rgba(255,255,255,0.4)',
-                    '0 0 20px rgba(255,255,255,0.2)',
-                  ],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
+              <div className="absolute inset-0 rounded-3xl bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
 
               {/* Icon */}
               <div className="flex justify-center mb-6">

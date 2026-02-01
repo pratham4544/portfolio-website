@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
 import { soundManager } from './SoundManager';
@@ -14,7 +14,7 @@ const MysteryChest = ({ onClick }) => {
     fetch('/animations/treasure-chest.json')
       .then(res => res.json())
       .then(data => setAnimationData(data))
-      .catch((err) => {
+      .catch(() => {
         console.log('Treasure chest animation not found, using fallback');
       });
   }, []);
@@ -46,18 +46,12 @@ const MysteryChest = ({ onClick }) => {
       onClick={handleClick}
     >
       {/* Mystical Aura */}
-      <motion.div
-        className="absolute inset-0 rounded-3xl blur-3xl -z-10"
+      <div
+        className="absolute inset-0 rounded-3xl blur-3xl -z-10 transition-all duration-300"
         style={{
           background: 'radial-gradient(circle, rgba(255,165,0,0.4) 0%, rgba(139,69,19,0.6) 50%, transparent 70%)',
-        }}
-        animate={{
-          scale: isHovered ? [1, 1.3, 1] : [1, 1.15, 1],
-          opacity: isHovered ? [0.6, 0.9, 0.6] : [0.4, 0.6, 0.4],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
+          transform: isHovered ? 'scale(1.2)' : 'scale(1)',
+          opacity: isHovered ? 0.8 : 0.5,
         }}
       />
 
@@ -103,72 +97,34 @@ const MysteryChest = ({ onClick }) => {
           </motion.div>
         )}
 
-        {/* Magical Particles Escaping */}
+        {/* Magical Particles - only on opening */}
         <AnimatePresence>
-          {(isHovered || isOpening) && (
+          {isOpening && (
             <>
-              {[...Array(16)].map((_, i) => (
+              {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-3 h-3 rounded-full"
                   style={{
                     left: '50%',
                     top: '40%',
-                    background: i % 3 === 0 ? '#FFD700' : i % 3 === 1 ? '#FF6B35' : '#FFA500',
-                    boxShadow: `0 0 12px ${i % 3 === 0 ? '#FFD700' : i % 3 === 1 ? '#FF6B35' : '#FFA500'}`,
+                    background: i % 2 === 0 ? '#FFD700' : '#FFA500',
+                    boxShadow: `0 0 12px ${i % 2 === 0 ? '#FFD700' : '#FFA500'}`,
                   }}
-                  initial={{ 
-                    x: 0, 
-                    y: 0, 
-                    opacity: 1, 
-                    scale: 1 
-                  }}
+                  initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
                   animate={{
-                    x: Math.cos((i * 22.5) * Math.PI / 180) * (isOpening ? 200 : 100),
-                    y: Math.sin((i * 22.5) * Math.PI / 180) * (isOpening ? 200 : 100) - 60,
+                    x: Math.cos((i * 45) * Math.PI / 180) * 150,
+                    y: Math.sin((i * 45) * Math.PI / 180) * 150 - 60,
                     opacity: 0,
-                    scale: isOpening ? 2 : 0,
+                    scale: 1.5,
                   }}
                   exit={{ opacity: 0 }}
-                  transition={{
-                    duration: isOpening ? 1.5 : 2.5,
-                    repeat: isOpening ? 0 : Infinity,
-                    delay: i * 0.08,
-                    ease: "easeOut",
-                  }}
+                  transition={{ duration: 1.2, delay: i * 0.05, ease: "easeOut" }}
                 />
               ))}
             </>
           )}
         </AnimatePresence>
-
-        {/* Sparkle Effects */}
-        {isHovered && (
-          <>
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={`sparkle-${i}`}
-                className="absolute text-3xl"
-                style={{
-                  left: `${20 + i * 15}%`,
-                  top: `${15 + (i % 3) * 25}%`,
-                }}
-                animate={{
-                  scale: [0, 1.5, 0],
-                  opacity: [0, 1, 0],
-                  rotate: [0, 180, 360],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                }}
-              >
-                ✨
-              </motion.div>
-            ))}
-          </>
-        )}
 
         {/* Light Beam (when opening) */}
         {isOpening && (
@@ -184,122 +140,18 @@ const MysteryChest = ({ onClick }) => {
           />
         )}
 
-        {/* Glowing Coins Bursting Out */}
-        {isOpening && (
-          <>
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={`coin-${i}`}
-                className="absolute text-4xl"
-                style={{
-                  left: '50%',
-                  top: '40%',
-                }}
-                initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
-                animate={{
-                  x: Math.cos((i * 30) * Math.PI / 180) * 180,
-                  y: Math.sin((i * 30) * Math.PI / 180) * 180 - 100,
-                  opacity: 0,
-                  rotate: 720,
-                }}
-                transition={{
-                  duration: 2,
-                  delay: i * 0.05,
-                  ease: "easeOut",
-                }}
-              >
-                💰
-              </motion.div>
-            ))}
-          </>
-        )}
-
         {/* 3D Shadow */}
-        <motion.div
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-6 -z-20 blur-2xl"
+        <div
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-6 -z-20 blur-2xl transition-all duration-300"
           style={{
             background: 'radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, transparent 70%)',
-          }}
-          animate={{
-            scaleX: isHovered ? 1.3 : 1,
+            transform: `translateX(-50%) scaleX(${isHovered ? 1.3 : 1})`,
             opacity: isHovered ? 0.5 : 0.4,
           }}
         />
       </div>
 
-      {/* Animated Arrow Pointing Down */}
-      <motion.div
-        className="absolute -bottom-64 left-1/2 transform -translate-x-1/2"
-        animate={{
-          y: [0, -15, 0],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-        }}
-      >
-        <div className="text-7xl"
-             style={{ 
-               filter: 'drop-shadow(0 0 25px rgba(255,215,0,1))',
-             }}>
-          👇
-        </div>
-      </motion.div>
-
-      {/* Hover Instruction Text */}
-      <motion.div
-        className="absolute -bottom-48 left-1/2 transform -translate-x-1/2 text-center w-full max-w-2xl px-4"
-        animate={{
-          y: [0, -5, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-        }}
-      >
-        {/* Main Click Instruction */}
-        <motion.div
-          animate={{
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-          }}
-          className="mb-4"
-        >
-          <p className="text-4xl md:text-5xl lg:text-6xl font-mystical font-bold text-alchemy-gold"
-             style={{ 
-               textShadow: '0 0 30px rgba(255,215,0,1), 3px 3px 10px rgba(0,0,0,1)',
-               filter: 'drop-shadow(0 0 20px rgba(255,215,0,0.9))'
-             }}>
-            👆 Click Here to Open 👆
-          </p>
-        </motion.div>
-
-        {/* Subtext */}
-        <p className="text-2xl md:text-3xl font-handwritten text-alchemy-parchment mb-2"
-           style={{ 
-             textShadow: '2px 2px 8px rgba(0,0,0,1)',
-             background: 'rgba(0,0,0,0.6)',
-             padding: '12px 24px',
-             borderRadius: '12px',
-             display: 'inline-block'
-           }}>
-          Unfold the Mystery of My Journey
-        </p>
-
-        <p className="text-lg md:text-xl text-alchemy-cyan mt-2"
-           style={{ 
-             textShadow: '1px 1px 6px rgba(0,0,0,1)',
-             background: 'rgba(0,0,0,0.5)',
-             padding: '8px 16px',
-             borderRadius: '8px',
-             display: 'inline-block'
-           }}>
-          Discover the secrets of alchemical transmutation
-        </p>
-      </motion.div>
+      
     </motion.div>
   );
 };
